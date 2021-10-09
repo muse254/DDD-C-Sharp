@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+
 
 /*
  class OrderLine{
@@ -13,7 +15,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Dto
 {
     public record OrderLineDto
     (
-        int Id,
+        Guid Id,
         string Item,
         decimal Price,
         int Count

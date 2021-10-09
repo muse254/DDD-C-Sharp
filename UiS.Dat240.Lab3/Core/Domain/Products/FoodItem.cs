@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UiS.Dat240.Lab3.Core.Domain.Products.Events;
 using UiS.Dat240.Lab3.SharedKernel;
 
