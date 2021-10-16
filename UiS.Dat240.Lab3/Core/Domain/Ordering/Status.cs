@@ -10,8 +10,10 @@ class Status {
     }
 */
 
-namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Dto{
-    public enum StatusDto{
+namespace UiS.Dat240.Lab3.Core.Domain.Ordering
+{
+    public enum Status
+    {
         New,
         Placed,
         Shipped,

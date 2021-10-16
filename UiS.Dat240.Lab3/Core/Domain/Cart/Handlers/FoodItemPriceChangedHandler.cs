@@ -18,7 +18,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Handlers
 
 		public async Task Handle(FoodItemPriceChanged notification, CancellationToken cancellationToken)
 		{
-			var carts = await _db.ShoppingCart.Include(c => c.Items)
+			var carts = await _db.ShoppingCarts.Include(c => c.Items)
 							.Where(c => c.Items.Any(i => i.Sku == notification.ItemId))
 							.ToListAsync(cancellationToken);
 			foreach (var cart in carts)

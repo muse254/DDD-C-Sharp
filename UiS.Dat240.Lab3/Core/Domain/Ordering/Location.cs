@@ -1,6 +1,4 @@
-﻿namespace UiS.Dat240.Lab3.Core.Domain.Ordering
-
-/*
+﻿/*
 class Location {
         <<ValueObject>>
         + Building
@@ -9,8 +7,11 @@ class Location {
     }
 */
 
+using UiS.Dat240.Lab3.SharedKernel;
+
+namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
-    public class Location
+    public class Location : BaseEntity
     {
         public Location(string building, string roomNumber, string notes)
         {
@@ -18,6 +19,8 @@ class Location {
             RoomNumber = roomNumber;
             Notes = notes;
         }
+
+        public int Id { get; protected set; }
 
         public string Building { get; protected set; }
         public string RoomNumber { get; protected set; }

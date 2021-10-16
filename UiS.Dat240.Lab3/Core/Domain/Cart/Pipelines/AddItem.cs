@@ -26,11 +26,11 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
 
 			public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
 			{
-				var cart = _db.ShoppingCart.Include(c => c.Items).SingleOrDefault(c => c.Id == request.CartId);
+				var cart = _db.ShoppingCarts.Include(c => c.Items).SingleOrDefault(c => c.Id == request.CartId);
 				if (cart == null)
 				{
 					cart = new ShoppingCart(request.CartId);
-					_db.ShoppingCart.Add(cart);
+					_db.ShoppingCarts.Add(cart);
 				}
 				cart.AddItem(request.ItemId, request.ItemName, request.ItemPrice);
 

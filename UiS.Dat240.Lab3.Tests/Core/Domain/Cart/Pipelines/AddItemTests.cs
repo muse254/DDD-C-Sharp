@@ -33,9 +33,9 @@ namespace UiS.Dat240.Lab3.Tests.Core.Domain.Cart.Pipelines
 			}
 			using (var context = new ShopContext(ContextOptions, null))
 			{
-				context.ShoppingCart.Count().ShouldBe(1);
+				context.ShoppingCarts.Count().ShouldBe(1);
 
-				context.ShoppingCart.Include(c => c.Items).Single().Items.Count().ShouldBe(1);
+				context.ShoppingCarts.Include(c => c.Items).Single().Items.Count().ShouldBe(1);
 			}
 		}
 
@@ -65,10 +65,10 @@ namespace UiS.Dat240.Lab3.Tests.Core.Domain.Cart.Pipelines
 
 			using (var context = new ShopContext(ContextOptions, null))
 			{
-				context.ShoppingCart.Count().ShouldBe(1);
+				context.ShoppingCarts.Count().ShouldBe(1);
 
-				context.ShoppingCart.Include(c => c.Items).Single().Items.Count().ShouldBe(1);
-				context.ShoppingCart.Include(c => c.Items).Single().Items.Single().Count.ShouldBe(2);
+				context.ShoppingCarts.Include(c => c.Items).Single().Items.Count().ShouldBe(1);
+				context.ShoppingCarts.Include(c => c.Items).Single().Items.Single().Count.ShouldBe(2);
 			}
 		}
 	}

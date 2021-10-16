@@ -20,7 +20,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
 			public Handler(ShopContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
 
 			public async Task<ShoppingCart?> Handle(Request request, CancellationToken cancellationToken)
-				=> await _db.ShoppingCart.Include(c => c.Items)
+				=> await _db.ShoppingCarts.Include(c => c.Items)
 										 .Where(c => c.Id == request.CartId)
 										 .SingleOrDefaultAsync(cancellationToken);
 

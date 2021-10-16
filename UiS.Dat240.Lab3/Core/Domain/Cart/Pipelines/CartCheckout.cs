@@ -6,7 +6,6 @@ using UiS.Dat240.Lab3.Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UiS.Dat240.Lab3.Core.Domain.Ordering;
-using UiS.Dat240.Lab3.Core.Domain.Ordering.Dto;
 using UiS.Dat240.Lab3.Core.Domain.Ordering.Services;
 using System.Collections.Generic;
 
@@ -41,16 +40,16 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
 
             private readonly IOrderingService _orderingService;
 
-            public Handler(ShopContext db, IOrderingService orderingService)
+            public Handler(ShopContext db)
             {
                 _db = db ?? throw new ArgumentNullException(nameof(db));
-                _orderingService = orderingService;
+                _orderingService = new OrderingService(_db);
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
                 // retrieve the cart
-                var cart = await _db.ShoppingCart.Include(c => c.Items)
+                var cart = await _db.ShoppingCarts.Include(c => c.Items)
                                          .Where(c => c.Id == request.CartId)
                                          .SingleOrDefaultAsync(cancellationToken);
 
@@ -58,17 +57,17 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
                 if (cart != null)
                 {
                     var location = new Location(request.Building, request.RoomNumber, request.LocationNotes);
-                    var orderLines = new List<OrderLineDto>();
+                    var orderLines = new List<OrderLine>();
 
                     foreach (var item in cart.Items)
                     {
-                        orderLines.Add(new OrderLineDto(item.Id, item.Name, item.Price, item.Count));
+                        orderLines.Add(new OrderLine(item.Id, item.Name, item.Price, item.Count));
                     }
 
                     await _orderingService.PlaceOrder(location, request.CustomerName, orderLines.ToArray());
 
                     // the cart should be closed and removed from the session after it is placed
-                    _db.ShoppingCart.Remove(cart);
+                    _db.ShoppingCarts.Remove(cart);
                     await _db.SaveChangesAsync(cancellationToken);
                 }
 
