@@ -35,7 +35,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Products
             get => _price;
             set
             {
-                if (_price != 0 && _price != value)
+                if (_price != value)
                 {
                     Events.Add(new FoodItemPriceChanged(Id, oldPrice: _price, newPrice: value));
                     _price = value;

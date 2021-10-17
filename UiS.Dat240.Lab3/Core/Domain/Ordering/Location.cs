@@ -13,6 +13,8 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
     public class Location : BaseEntity
     {
+
+        public Location() { }
         public Location(string building, string roomNumber, string notes)
         {
             Building = building;
@@ -21,9 +23,8 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
         }
 
         public int Id { get; protected set; }
-
-        public string Building { get; protected set; }
-        public string RoomNumber { get; protected set; }
-        public string Notes { get; protected set; }
+        public string Building { get; set; } = "";
+        public string RoomNumber { get; set; } = "";
+        public string Notes { get; set; } = "";
     }
 }

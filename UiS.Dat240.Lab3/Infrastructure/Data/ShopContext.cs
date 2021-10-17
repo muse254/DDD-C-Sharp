@@ -25,6 +25,9 @@ namespace UiS.Dat240.Lab3.Infrastructure.Data
         public DbSet<FoodItem> FoodItems { get; set; } = null!;
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Location> Locations { get; set; } = null!;
+        public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<OrderLine> OrderLines { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

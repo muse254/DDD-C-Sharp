@@ -7,7 +7,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Products.Events
         public FoodItemPriceChanged(int itemId, decimal oldPrice, decimal newPrice)
         {
             ItemId = itemId;
-            if (oldPrice > 0)
+            if (oldPrice >= 0)
             {
                 OldPrice = oldPrice;
             }
@@ -24,7 +24,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Products.Events
             else
             {
                 // throw an out of range exception as the price cannot be negative
-                throw new System.ArgumentOutOfRangeException(nameof(newPrice), "the price cannot be negative");
+                throw new System.ArgumentOutOfRangeException(nameof(newPrice), "the price cannot be zero or negative");
             }
         }
 

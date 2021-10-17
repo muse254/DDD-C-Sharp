@@ -23,9 +23,6 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
 
         public async Task<int> PlaceOrder(Location location, string customerName, OrderLine[] orderLines)
         {
-            // create customer
-            // var customer = new Customer(customerName);
-
             // create an order form the info provided by calling the order constructor
             var order = new Order(location, customerName, orderLines);
 
