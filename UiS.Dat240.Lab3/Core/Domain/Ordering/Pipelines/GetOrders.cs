@@ -22,10 +22,8 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Pipelines
 
             public async Task<List<Order>> Handle(Request request, CancellationToken cancellationToken)
             {
-                return await _db.Orders.Include(c => c.OrderLines)
-                                       .Include(c => c.Location)
-                                       .Include(c => c.Customer)
-                                       .ToListAsync(cancellationToken);
+                return await _db.Orders.Include(order => order.Customer)
+                                      .ToListAsync(cancellationToken);
             }
         }
     }

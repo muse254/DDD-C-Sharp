@@ -16,8 +16,8 @@ namespace UiS.Dat240.Lab3.Pages
 
         public async Task OnGetAsync()
         {
-            var ID = int.Parse(Request.Query["ID"]);
-            Order = await _mediator.Send(new Core.Domain.Ordering.Pipelines.GetOrder.Request(ID));
+            var id = int.Parse(Request.Query["id"]);
+            Order = await _mediator.Send(new Core.Domain.Ordering.Pipelines.GetOrder.Request(id));
         }
     }
 }

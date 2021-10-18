@@ -8,6 +8,7 @@ using UiS.Dat240.Lab3.Core.Domain.Ordering;
 using UiS.Dat240.Lab3.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace UiS.Dat240.Lab3.Infrastructure.Data
 {
@@ -22,17 +23,39 @@ namespace UiS.Dat240.Lab3.Infrastructure.Data
             this.Database.EnsureCreated();
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                // Customer
+                entity.HasOne(order => order.Customer)
+                .WithOne(customer => customer.Order)
+                .HasForeignKey<Customer>(order => order.OrderId);
+
+                // OrderLines
+                entity.OwnsMany(order => order.OrderLines);
+
+                // Location
+                entity.OwnsOne(order => order.Location)
+                .Property(location => location.Building)
+                .HasColumnName("Building");
+                entity.OwnsOne(order => order.Location)
+                .Property(location => location.RoomNumber)
+                .HasColumnName("RoomNumber");
+                entity.OwnsOne(order => order.Location)
+                .Property(location => location.Notes)
+                .HasColumnName("LocationNotes");
+            });
+        }
+
         public DbSet<FoodItem> FoodItems { get; set; } = null!;
         public DbSet<ShoppingCart> ShoppingCarts { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
-        public DbSet<Location> Locations { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<OrderLine> OrderLines { get; set; } = null!;
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

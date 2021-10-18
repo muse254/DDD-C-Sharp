@@ -11,6 +11,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UiS.Dat240.Lab3.Pages
 {
+
+    public class CheckoutForm
+    {
+        public CheckoutForm() { }
+
+        public string CustomerName { get; set; } = "";
+        public string Building { get; set; } = "";
+        public string RoomNumber { get; set; } = "";
+        public string LocationNotes { get; set; } = "";
+    }
+
     public class CartModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -19,9 +30,7 @@ namespace UiS.Dat240.Lab3.Pages
 
         public ShoppingCart? Cart { get; private set; }
 
-        public string CustomerName { get; private set; } = "";
-
-        public Location Location { get; private set; } = new();
+        public CheckoutForm Form { get; set; } = new();
 
         // From the the creation of the Location object and CustomerName there can be a maximum of 3 error messages
         public string[] Errors { get; private set; } = System.Array.Empty<string>();
@@ -34,29 +43,21 @@ namespace UiS.Dat240.Lab3.Pages
             Cart = await _mediator.Send(new Get.Request(cartId.Value));
         }
 
-        public async Task<IActionResult> OnPostAsync(string customerName, Location location)
+        public async Task<IActionResult> OnPostAsync(CheckoutForm form)
         {
             // get cart details
             var cartId = HttpContext.Session.GetGuid("CartId");
             if (cartId is null) throw new ArgumentNullException(nameof(cartId));
             Cart = await _mediator.Send(new Get.Request(cartId.Value));
 
-            Location = location;
-            CustomerName = customerName;
+            var response = await _mediator.Send(new CartCheckout.Request(form.CustomerName, form.Building,
+            form.RoomNumber, form.LocationNotes, cartId.Value));
+            if (response.Success) return RedirectToPage("Index");
 
-            // initialize error string array
-            var errors = new List<string>();
+            Form = form;
+            Errors = response.Errors;
 
-            // return error if CustomerName and/or Building and/or RoomNumber is not set
-            if (string.IsNullOrEmpty(CustomerName)) { errors.Add("Name is not set"); }
-            if (string.IsNullOrEmpty(Location.Building)) { errors.Add("Building is not set"); }
-            if (string.IsNullOrEmpty(Location.RoomNumber)) { errors.Add("RoomNumber is not set"); }
-
-            if (errors.Count > 0) { Errors = errors.ToArray(); return Page(); }
-
-            await _mediator.Send(new CartCheckout.Request(CustomerName, Location.Building, Location.RoomNumber, Location.Notes, cartId.Value));
-
-            return RedirectToPage("Index");
+            return Page();
         }
     }
 }

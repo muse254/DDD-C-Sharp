@@ -1,0 +1,48 @@
+@page
+@model Lab3.Pages.OrderModel
+
+<div class="text-center">
+
+    <h1 class="display-3">Order</h1>
+    <div class="text-left">
+        @if (Model.Order is not null)
+        {
+            <h2 class="display-4">Order Details</h2>
+            <div>
+                <p><strong>ID</strong>: @Model.Order.Id</p>
+                <p><strong>Timestamp</strong>: @Model.Order.Date</p>
+            </div>
+            <h2 class="display-4">Customer Details</h2>
+            <div>
+                <p><strong>Customer Name</strong>: @Model.Order.Customer.Name</p>
+                <p><strong>Building</strong> : @Model.Order.Location.Building</p>
+                <p><strong>Room Number</strong> : @Model.Order.Location.RoomNumber</p>
+                <p><strong>Location Notes</strong> : @Model.Order.Location.Notes</p>
+            </div>
+            <h2 class="display-4">Item(s) Ordered</h2>
+            <div>
+                <table class="table  table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Price (Kr)</th>
+                            <th scope="col">Item Count</th>
+                        </tr>
+                    </thead>
+                    @foreach (var orderLine in @Model.Order.OrderLines)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>@orderLine.Id</td>
+                                <td>@orderLine.Item</td>
+                                <td>@orderLine.Price</td>
+                                <td>@orderLine.Count</td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</div>

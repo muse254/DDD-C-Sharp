@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using UiS.Dat240.Lab3.Core.Domain.Ordering;
 using UiS.Dat240.Lab3.Core.Domain.Ordering.Services;
 using System.Collections.Generic;
+using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
 {
-
     /*
     Create a new Pipeline for CartCheckout (in the Cart context) which retrieves a cart and inserts it into the IOrderingService to create an order
     The current cart should be closed and removed from the session after it is placed.
@@ -25,15 +25,16 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
             Location Notes
             Customer Name
         */
-
         public record Request(
             string CustomerName,
             string Building,
             string RoomNumber,
             string LocationNotes,
-            Guid CartId) : IRequest<Unit>;
+            Guid CartId) : IRequest<Response>;
 
-        public class Handler : IRequestHandler<Request>
+        public record Response(bool Success, string[] Errors);
+
+        public class Handler : IRequestHandler<Request, Response>
         {
 
             private readonly ShopContext _db;
@@ -46,8 +47,16 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
                 _orderingService = new OrderingService(_db);
             }
 
-            public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
+                var errors = new List<string>();
+
+                // check for empty or null values in request
+                if (string.IsNullOrEmpty(request.CustomerName)) errors.Add("CustomerName field is required");
+                if (string.IsNullOrEmpty(request.Building)) errors.Add("Building field is required");
+                if (string.IsNullOrEmpty(request.RoomNumber)) errors.Add("RoomNumber field is required");
+                if (errors.Count > 0) return new Response(false, errors.ToArray());
+
                 // retrieve the cart
                 var cart = await _db.ShoppingCarts.Include(c => c.Items)
                                          .Where(c => c.Id == request.CartId)
@@ -71,7 +80,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Cart.Pipelines
                     await _db.SaveChangesAsync(cancellationToken);
                 }
 
-                return Unit.Value;
+                return new Response(true, Array.Empty<string>());
             }
         }
     }

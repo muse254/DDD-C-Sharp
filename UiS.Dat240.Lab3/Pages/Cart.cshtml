@@ -41,24 +41,24 @@
 </div>
 
 <h2 class="display-4">Checkout</h2>
-@if (Model.Location is not null)
+@if (Model.Cart is not null && Model.Form is not null)
 {
 	<form method="post" class="mt-5">
 	<div class="mb-3">
 		Name:
-		<input asp-for="CustomerName" class="form-control" />
+		<input asp-for="Form.CustomerName" class="form-control" />
 	</div>
 	<div class="mb-3">
 		Building:
-		<input asp-for="Location.Building" class="form-control" />
+		<input asp-for="Form.Building" class="form-control" />
 	</div>
 	<div class="mb-3">
 		Room Number:
-		<input asp-for="Location.RoomNumber" class="form-control" />
+		<input asp-for="Form.RoomNumber" class="form-control" />
 	</div>
 	<div class="mb-3">
 		Location Notes:
-		<input asp-for="Location.Notes" class="form-control" />
+		<input asp-for="Form.LocationNotes" class="form-control" />
 	</div>
 
 	<button type="submit" class="btn btn-primary">Checkout</button>

@@ -21,10 +21,8 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Pipelines
             public Handler(ShopContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
 
             public async Task<Order?> Handle(Request request, CancellationToken cancellationToken)
-                => await _db.Orders.Include(c => c.OrderLines)
-                                   .Include(c => c.Location)
-                                   .Include(c => c.Customer)
-                                   .Where(c => c.Id == request.OrderId)
+                => await _db.Orders.Include(order => order.Customer)
+                                   .Where(order => order.Id == request.OrderId)
                                    .SingleOrDefaultAsync(cancellationToken);
         }
     }

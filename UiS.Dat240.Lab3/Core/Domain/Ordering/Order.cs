@@ -22,21 +22,27 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
     public class Order : BaseEntity
     {
-
-        public Order() { }
-        public Order(Location location, string customerName, OrderLine[] orderLines)
+        private Order()
         {
-            OrderLines = orderLines.ToList();
-            Location = location;
-            Customer = new Customer(customerName);
+            Status = Status.New;
+            Date = DateTime.Now;
         }
-        public int Id { get; protected set; }
-        public DateTime Date { get; } = DateTime.Now;
-        public List<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
-        public Location Location { get; set; } = new Location();
+        public Order(Location location, Customer customer, OrderLine[] orderLines)
+        {
+            OrderLines = orderLines;
+            Location = location;
+            Customer = customer;
+            Date = DateTime.Now;
+            Status = Status.Placed;
+        }
+
+        public int Id { get; set; }
+        public DateTime Date { get; private set; }
+        public virtual ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+        public virtual Location Location { get; set; } = null!;
         public string Notes { get; set; } = "";
-        public Customer Customer { get; set; } = new Customer();
-        public Status Status { get; set; } = Status.New;
+        public virtual Customer Customer { get; set; } = null!;
+        public Status Status { get; set; }
 
         public void AddOrderLine(OrderLine orderLine)
         {
