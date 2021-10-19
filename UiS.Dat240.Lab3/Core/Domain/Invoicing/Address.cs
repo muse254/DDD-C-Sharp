@@ -1,21 +1,15 @@
-/*
-class Address {
-        <<ValueObject>>
-        + Building
-        + RoomNumber
-        + Notes
-    }
-*/
-
-using UiS.Dat240.Lab3.SharedKernel;
 using System.Collections.Generic;
+using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Invoicing
 {
     public class Address : ValueObject
     {
-        public Address() { }
+        public string Building { get; set; } = "";
+        public string RoomNumber { get; set; } = "";
+        public string Notes { get; set; } = "";
 
+        public Address() { }
         public Address(string building, string roomNumber, string notes)
         {
             Building = building;
@@ -23,11 +17,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing
             Notes = notes;
         }
 
-        public string Building { get; private set; } = "";
-        public string RoomNumber { get; private set; } = "";
-        public string Notes { get; private set; } = "";
-
-        protected override IEnumerable<object> GetEqualityComponents()
+        protected override IEnumerable<object?> GetEqualityComponents()
         {
             // Using a yield return statement to return each element one at a time
             yield return Building;

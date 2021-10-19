@@ -12,7 +12,7 @@ using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
-    public class OrderLine : BaseEntity
+    public class OrderLine
     {
         public OrderLine() { }
         public OrderLine(Guid id, string name, decimal price, int count)

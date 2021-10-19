@@ -10,7 +10,7 @@ using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
-    public class Customer : BaseEntity
+    public class Customer
     {
         public Customer() { }
         public Customer(string customerName)

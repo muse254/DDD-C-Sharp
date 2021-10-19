@@ -17,6 +17,7 @@ using System;
 using System.Linq;
 using UiS.Dat240.Lab3.SharedKernel;
 using System.Collections.Generic;
+using UiS.Dat240.Lab3.Core.Domain.Ordering.Events;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
@@ -42,7 +43,20 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
         public virtual Location Location { get; set; } = null!;
         public string Notes { get; set; } = "";
         public virtual Customer Customer { get; set; } = null!;
-        public Status Status { get; set; }
+
+        private Status _status;
+        public Status Status
+        {
+            get => _status;
+            set
+            {
+                if (_status != value && value == Status.Placed)
+                {
+                    Events.Add(new OrderPlaced(Id));
+                }
+                _status = value;
+            }
+        }
 
         public void AddOrderLine(OrderLine orderLine)
         {
