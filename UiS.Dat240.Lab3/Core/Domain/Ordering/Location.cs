@@ -14,11 +14,10 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
     public class Location : ValueObject
     {
-        public string Building { get; set; } = "";
-        public string RoomNumber { get; set; } = "";
-        public string Notes { get; set; } = "";
+        public string Building { get; set; }
+        public string RoomNumber { get; set; }
+        public string Notes { get; set; }
 
-        public Location() { }
         public Location(string building, string roomNumber, string notes)
         {
             Building = building;

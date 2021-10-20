@@ -28,13 +28,12 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment
     public class Offer : BaseEntity
     {
         public Offer() { }
-        public Offer(int orderId, Shipper shipper)
+        public Offer(int orderId)
         {
-            Shipper = shipper;
             OrderId = orderId;
         }
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public Shipper Shipper { get; set; } = new Shipper();
+        public Shipper Shipper { get; set; } = null!;
     }
 }

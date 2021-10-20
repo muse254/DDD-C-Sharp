@@ -19,7 +19,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
         }
 
         public int Id { get; private set; }
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = null!;
         public int OrderId { get; private set; }
         public Order Order { get; set; } = null!;
     }

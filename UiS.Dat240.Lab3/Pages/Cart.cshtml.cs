@@ -52,7 +52,11 @@ namespace UiS.Dat240.Lab3.Pages
 
             var response = await _mediator.Send(new CartCheckout.Request(form.CustomerName, form.Building,
             form.RoomNumber, form.LocationNotes, cartId.Value));
-            if (response.Success) return RedirectToPage("Index");
+            if (response.Success)
+            {
+                // When an OrderPlaced event is raised then a handler in the fulfillment context should create an empty offer
+                return RedirectToPage("Index");
+            }
 
             Form = form;
             Errors = response.Errors;

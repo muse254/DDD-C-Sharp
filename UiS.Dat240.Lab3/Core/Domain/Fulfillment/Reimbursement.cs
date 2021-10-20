@@ -9,19 +9,17 @@ using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment
 {
-    public class Reimbursement : BaseEntity
+    public class Reimbursement 
     {
         public Reimbursement() { }
-        public Reimbursement(Shipper shipper, float amount, int invoiceId)
+        public Reimbursement(float amount)
         {
-            Shipper = shipper;
             Amount = amount;
-            InvoiceId = invoiceId;
         }
 
         public int Id { get; set; }
-        public Shipper Shipper { get; set; } = new();
+        public Shipper Shipper { get; set; } = null!;
         public float Amount { get; set; }
-        public int InvoiceId { get; set; }
+        public int? InvoiceId { get; set; }
     }
 }

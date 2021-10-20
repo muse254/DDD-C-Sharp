@@ -5,12 +5,10 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing
 {
     public class Address : ValueObject
     {
-        public string Building { get; set; } = "";
-        public string RoomNumber { get; set; } = "";
-        public string Notes { get; set; } = "";
-
-        public Address() { }
-        public Address(string building, string roomNumber, string notes)
+        public string Building { get; set; }
+        public string RoomNumber { get; set; }
+        public string? Notes { get; set; }
+        public Address(string building, string roomNumber, string? notes)
         {
             Building = building;
             RoomNumber = roomNumber;

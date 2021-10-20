@@ -18,6 +18,7 @@
                 <p><strong>Building</strong> : @Model.Order.Location.Building</p>
                 <p><strong>Room Number</strong> : @Model.Order.Location.RoomNumber</p>
                 <p><strong>Location Notes</strong> : @Model.Order.Location.Notes</p>
+                <p><strong>Order Status</strong> : @Model.Order.Status</p>
             </div>
             <h2 class="display-4">Item(s) Ordered</h2>
             <div>
@@ -43,6 +44,23 @@
                     }
                 </table>
             </div>
+
+            <h2 class="display-4">Ship item</h2>
+            <form method="post" class="mt-5">
+                <div class="mb-3">
+                    Shipper name:
+                    <input asp-for="Shipper" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+                @if (!string.IsNullOrEmpty(Model.Error))
+                {
+                    <div class="text-danger">
+                        @Model.Error
+                    </div>
+                }
+            </form>
+
         }
     </div>
 </div>

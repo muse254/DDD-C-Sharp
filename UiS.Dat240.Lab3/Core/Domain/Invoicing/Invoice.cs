@@ -47,15 +47,25 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing
 {
     public class Invoice : BaseEntity
     {
-        public Invoice()
+        public Invoice() { }
+        public Invoice(
+           string Building,
+           string RoomNumber,
+           string LocationNotes,
+           string customerName,
+           decimal amount
+        )
         {
+            Customer = new Customer(customerName);
+            Address = new Address(Building, RoomNumber, LocationNotes);
+            Amount = new Payment(amount);
             Status = Status.New;
         }
 
-        public int Id { get; set; }
-        public Customer Customer { get; set; } = new();
-        public Address Address { get; set; } = new();
-        public Payment Amount { get; set; } = new();
+        public int Id { get; protected set; }
+        public Customer Customer { get; set; } = null!;
+        public Address Address { get; set; } = null!;
+        public Payment Amount { get; set; } = null!;
         public int OrderId { get; set; }
         public Status Status { get; set; }
     }

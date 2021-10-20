@@ -39,7 +39,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 
         public int Id { get; set; }
         public DateTime Date { get; private set; }
-        public virtual ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+        public virtual ICollection<OrderLine> OrderLines { get; set; } = null!;
         public virtual Location Location { get; set; } = null!;
         public string Notes { get; set; } = "";
         public virtual Customer Customer { get; set; } = null!;

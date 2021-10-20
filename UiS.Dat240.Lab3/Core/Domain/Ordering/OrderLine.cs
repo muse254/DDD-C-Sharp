@@ -23,7 +23,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
             Count = count;
         }
         public Guid Id { get; protected set; }
-        public string Item { get; set; } = "";
+        public string Item { get; set; } = null!;
         public decimal Price { get; set; }
         public int Count { get; set; }
     }
