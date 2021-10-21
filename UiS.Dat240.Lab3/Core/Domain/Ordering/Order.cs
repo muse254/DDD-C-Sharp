@@ -37,26 +37,14 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
             Status = Status.Placed;
         }
 
-        public int Id { get; set; }
+        public int Id { get; private set; }
         public DateTime Date { get; private set; }
         public virtual ICollection<OrderLine> OrderLines { get; set; } = null!;
         public virtual Location Location { get; set; } = null!;
         public string Notes { get; set; } = "";
         public virtual Customer Customer { get; set; } = null!;
 
-        private Status _status;
-        public Status Status
-        {
-            get => _status;
-            set
-            {
-                if (_status != value && value == Status.Placed)
-                {
-                    Events.Add(new OrderPlaced(Id));
-                }
-                _status = value;
-            }
-        }
+        public Status Status { get; set; }
 
         public void AddOrderLine(OrderLine orderLine)
         {

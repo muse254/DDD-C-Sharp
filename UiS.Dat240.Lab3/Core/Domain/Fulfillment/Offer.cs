@@ -18,22 +18,25 @@ classDiagram
     Offer --> Reimbursement
 */
 
-
-using System.Linq;
 using UiS.Dat240.Lab3.SharedKernel;
-using System.Collections.Generic;
+using System;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment
 {
     public class Offer : BaseEntity
     {
-        public Offer() { }
+        public Offer()
+        {
+            Shipper = new();
+        }
         public Offer(int orderId)
         {
+            Console.WriteLine("Offer created for id: " + orderId);
             OrderId = orderId;
+            Shipper = new();
         }
-        public int Id { get; set; }
+        public int Id { get; protected set; }
         public int OrderId { get; set; }
-        public Shipper Shipper { get; set; } = null!;
+        public virtual Shipper Shipper { get; set; }
     }
 }

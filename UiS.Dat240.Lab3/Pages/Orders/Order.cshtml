@@ -49,11 +49,11 @@
             <form method="post" class="mt-5">
                 <div class="mb-3">
                     Shipper name:
-                    <input asp-for="Shipper" class="form-control" />
+                    <input asp-for="Shipper.Name" class="form-control" />
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save</button>
-                @if (!string.IsNullOrEmpty(Model.Error))
+                @if (string.IsNullOrWhiteSpace(Model.Error)!)
                 {
                     <div class="text-danger">
                         @Model.Error

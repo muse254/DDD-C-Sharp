@@ -6,7 +6,6 @@
 */
 
 using System;
-using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering
 {
@@ -18,7 +17,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering
             Name = customerName;
         }
 
-        public int Id { get; private set; }
+        public int Id { get; protected set; }
         public string Name { get; set; } = null!;
         public int OrderId { get; private set; }
         public Order Order { get; set; } = null!;

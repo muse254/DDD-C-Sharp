@@ -1,5 +1,8 @@
 using System.Threading.Tasks;
 using UiS.Dat240.Lab3.Infrastructure.Data;
+using UiS.Dat240.Lab3.SharedKernel;
+using UiS.Dat240.Lab3.Core.Domain.Ordering.Events;
+using System;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
 {
@@ -9,7 +12,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
     }
 
     // Create a new class which implements IOrderingService
-    public class OrderingService : IOrderingService
+    public class OrderingService : BaseEntity, IOrderingService
     {
         // placing an order(s) would require storage for the newly placed order(s)
         // in the database; the shopcontext is therefore necesary for IOrderingService
@@ -25,14 +28,17 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
         {
             // create the customer making the order
             var customer = new Customer(customerName);
-            
+
             // create an order form the info provided by calling the order constructor
             var order = new Order(location, customer, orderLines);
 
             // save the order created to the database
             _db.Orders.Add(order);
+            _db.SaveChanges();
 
-            // commit the database changes made
+            Events.Add(new OrderPlaced(order.Id));
+            Events.Add(new OrderPlacedCopy(order.Id));
+
             return await _db.SaveChangesAsync();
         }
     }

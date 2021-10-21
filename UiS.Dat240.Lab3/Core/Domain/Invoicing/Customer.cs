@@ -12,6 +12,6 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing
         public int Id { get; protected set; }
         public string Name { get; set; } = null!;
         public int InvoiceId { get; set; }
-        public Invoice Invoice { get; set; } = null!;
+        public virtual Invoice Invoice { get; set; } = null!;
     }
 }

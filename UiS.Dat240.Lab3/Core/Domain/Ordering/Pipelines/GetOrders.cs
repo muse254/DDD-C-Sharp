@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UiS.Dat240.Lab3.Infrastructure.Data;
@@ -23,7 +22,8 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Pipelines
             public async Task<List<Order>> Handle(Request request, CancellationToken cancellationToken)
             {
                 return await _db.Orders.Include(order => order.Customer)
-                                      .ToListAsync(cancellationToken);
+                                       .Include(order => order.OrderLines)
+                                       .ToListAsync(cancellationToken);
             }
         }
     }

@@ -20,8 +20,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment.Pipelines
             public Handler(ShopContext db) => _db = db ?? throw new ArgumentNullException(nameof(db));
 
             public async Task<Offer?> Handle(Request request, CancellationToken cancellationToken)
-                => await _db.Offers.Where(offer => offer.OrderId == request.OrderId)
-                                    .SingleOrDefaultAsync(cancellationToken);
+                => await _db.Offers.SingleOrDefaultAsync(offer => offer.OrderId == request.OrderId, cancellationToken);
         }
     }
 }

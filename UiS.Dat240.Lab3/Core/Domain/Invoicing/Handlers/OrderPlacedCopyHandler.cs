@@ -9,17 +9,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Invoicing.Handlers
 {
-    public class OrderPlacedHandler : INotificationHandler<OrderPlaced>
+    public class OrderPlacedCopyHandler : INotificationHandler<OrderPlacedCopy>
     {
         private readonly ShopContext _db;
 
-        public OrderPlacedHandler(ShopContext db)
-                    => _db = db ?? throw new System.ArgumentNullException(nameof(db));
+        public OrderPlacedCopyHandler(ShopContext db) => _db = db ?? throw new System.ArgumentNullException(nameof(db));
 
-        public async Task Handle(OrderPlaced notification, CancellationToken cancellationToken)
+        public async Task Handle(OrderPlacedCopy notification, CancellationToken cancellationToken)
         {
             // When an OrderPlaced event is raised then a handler in the Invoice context should create an invoice and related classes
-            //
 
             // fetch order object
             var order = await _db.Orders.Include(order => order.Customer)
@@ -27,13 +25,16 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing.Handlers
                                         .Where(order => order.Id == notification.OrderId)
                                         .SingleOrDefaultAsync(cancellationToken);
 
+            _ = order ?? throw new System.ArgumentNullException(nameof(order));
+
             decimal amount = new Decimal(0);
             // get sum of all items
             foreach (var orderline in order.OrderLines)
             {
-                var value = (orderline.Price * orderline.Count);
-                amount += value;
+                amount += (orderline.Price * orderline.Count);
             }
+
+            Console.WriteLine("Invoice and related fields created");
 
             // create invoice from order Information
             var invoice = new Invoice(order.Location.Building, order.Location.RoomNumber,
@@ -41,7 +42,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing.Handlers
 
             // save invoice created to the database
             _db.Invoices.Add(invoice);
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(cancellationToken);
         }
 
     }

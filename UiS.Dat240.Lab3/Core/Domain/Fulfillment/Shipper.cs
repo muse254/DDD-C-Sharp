@@ -25,9 +25,9 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment
         public string Name { get; set; } = null!;
 
         public int OfferId { get; set; }
-        public Offer Offer { get; set; } = null!;
+        public virtual Offer Offer { get; set; } = null!;
 
         public int ReimbursementId { get; set; }
-        public Reimbursement Reimbursement { get; set; } = null!;
+        public virtual Reimbursement Reimbursement { get; set; } = null!;
     }
 }

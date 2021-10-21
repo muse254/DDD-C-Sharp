@@ -2,9 +2,9 @@ using UiS.Dat240.Lab3.SharedKernel;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Events
 {
-    public record OrderPlaced : BaseDomainEvent
+    public record OrderPlacedCopy : BaseDomainEvent
     {
-        public OrderPlaced(int orderId)
+        public OrderPlacedCopy(int orderId)
         { 
             OrderId = orderId;
         }

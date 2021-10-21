@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UiS.Dat240.Lab3.Core.Domain.Ordering.Events;
 using UiS.Dat240.Lab3.Infrastructure.Data;
 using MediatR;
+using System;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment.Handlers
 {
@@ -10,8 +11,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment.Handlers
     {
         private readonly ShopContext _db;
 
-        public OrderPlacedHandler(ShopContext db)
-                    => _db = db ?? throw new System.ArgumentNullException(nameof(db));
+        public OrderPlacedHandler(ShopContext db) => _db = db ?? throw new System.ArgumentNullException(nameof(db));
 
         public async Task Handle(OrderPlaced notification, CancellationToken cancellationToken)
         {
@@ -23,8 +23,9 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment.Handlers
             var reimbursement = new Reimbursement();
             _db.Reimbursements.Add(reimbursement);
 
-            await _db.SaveChangesAsync();
-        }
+            Console.WriteLine("Empty offer created");
 
+            await _db.SaveChangesAsync(cancellationToken);
+        }
     }
 }
