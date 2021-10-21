@@ -9,9 +9,13 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment.Handlers
 {
     public class OrderPlacedHandler : INotificationHandler<OrderPlaced>
     {
+        // _db is used as the variable to store the database context for use.
         private readonly ShopContext _db;
 
-        public OrderPlacedHandler(ShopContext db) => _db = db ?? throw new System.ArgumentNullException(nameof(db));
+        // This constructor is used to create the database context that is provided by the dependency injection container.
+        public OrderPlacedHandler(ShopContext db)
+            // if the database context is not provided, throw an exception.
+            => _db = db ?? throw new System.ArgumentNullException(nameof(db));
 
         public async Task Handle(OrderPlaced notification, CancellationToken cancellationToken)
         {
@@ -23,8 +27,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment.Handlers
             var reimbursement = new Reimbursement();
             _db.Reimbursements.Add(reimbursement);
 
-            Console.WriteLine("Empty offer created");
-
+            // Persist the changes made to the database.
             await _db.SaveChangesAsync(cancellationToken);
         }
     }

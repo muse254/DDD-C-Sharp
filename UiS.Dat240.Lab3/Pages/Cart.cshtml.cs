@@ -24,40 +24,61 @@ namespace UiS.Dat240.Lab3.Pages
 
     public class CartModel : PageModel
     {
+        // _mediator is used to store the IMediator from the OrdersModel constructor parameter.
         private readonly IMediator _mediator;
 
-        public CartModel(IMediator mediator) => _mediator = mediator ?? throw new System.ArgumentNullException(nameof(mediator));
+        // The constructor is instantiated and the dependency injection container includes the IMedaitor
+        // to the constructor parameters.
+        public CartModel(IMediator mediator)
+            // The IMediator is stored ar _mediator, if it is null an exception is thrown.
+            => _mediator = mediator ?? throw new System.ArgumentNullException(nameof(mediator));
 
+
+        // The ShoppingCart is used as a varible that is accessible from the OrderModel and also available
+        // for mutation when fetching an order from the database.
+        // It is nullable by default.
         public ShoppingCart? Cart { get; private set; }
 
+        // The Shipper is used as a varible that is accessible from the OrderModel.
         public CheckoutForm Form { get; set; } = new();
 
-        // From the the creation of the Location object and CustomerName there can be a maximum of 3 error messages
+        // The Errors is used as a varible that is accessible from the OrderModel and also available
+        // for mutation when logging errors.
+        // It is empty by default.
         public string[] Errors { get; private set; } = System.Array.Empty<string>();
 
         public async Task OnGetAsync()
         {
+            // The cartId is fetched from the Session data.
             var cartId = HttpContext.Session.GetGuid("CartId");
             if (cartId is null) return;
 
+            // If cartId is present, The Cart varible is used to store the cart fetched from the databse
+            // using the cartId as the identifier.
             Cart = await _mediator.Send(new Get.Request(cartId.Value));
         }
 
         public async Task<IActionResult> OnPostAsync(CheckoutForm form)
         {
-            // get cart details
+            // The cartId is fetched from the Session data.
             var cartId = HttpContext.Session.GetGuid("CartId");
+            // if the cartId is null, throw an exception.
             if (cartId is null) throw new ArgumentNullException(nameof(cartId));
+            // If cartId is present, The Cart varible is used to store the cart fetched from the databse
+            // using the cartId as the identifier.
             Cart = await _mediator.Send(new Get.Request(cartId.Value));
 
+            // Using the CheckoutForm, create a checkout request and save the response to a variable.
             var response = await _mediator.Send(new CartCheckout.Request(form.CustomerName, form.Building,
             form.RoomNumber, form.LocationNotes, cartId.Value));
+
+            // check the success of the response data.
             if (response.Success)
             {
-                // When an OrderPlaced event is raised then a handler in the fulfillment context should create an empty offer
                 return RedirectToPage("Index");
             }
 
+            // Update the variables then reutrn the Page() with the mutated data.
             Form = form;
             Errors = response.Errors;
 

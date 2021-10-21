@@ -13,7 +13,8 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing.Handlers
     {
         private readonly ShopContext _db;
 
-        public OrderPlacedCopyHandler(ShopContext db) => _db = db ?? throw new System.ArgumentNullException(nameof(db));
+        public OrderPlacedCopyHandler(ShopContext db)
+            => _db = db ?? throw new System.ArgumentNullException(nameof(db));
 
         public async Task Handle(OrderPlacedCopy notification, CancellationToken cancellationToken)
         {
@@ -27,18 +28,16 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing.Handlers
 
             _ = order ?? throw new System.ArgumentNullException(nameof(order));
 
-            decimal amount = new Decimal(0);
+            decimal sum = new Decimal(0);
             // get sum of all items
             foreach (var orderline in order.OrderLines)
             {
-                amount += (orderline.Price * orderline.Count);
+                sum += (orderline.Price * orderline.Count);
             }
-
-            Console.WriteLine("Invoice and related fields created");
 
             // create invoice from order Information
             var invoice = new Invoice(order.Location.Building, order.Location.RoomNumber,
-                order.Location.Notes, order.Customer.Name, amount);
+                order.Location.Notes, order.Customer.Name, sum);
 
             // save invoice created to the database
             _db.Invoices.Add(invoice);

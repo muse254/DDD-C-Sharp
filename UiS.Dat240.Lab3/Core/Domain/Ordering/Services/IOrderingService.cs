@@ -1,8 +1,5 @@
 using System.Threading.Tasks;
 using UiS.Dat240.Lab3.Infrastructure.Data;
-using UiS.Dat240.Lab3.SharedKernel;
-using UiS.Dat240.Lab3.Core.Domain.Ordering.Events;
-using System;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
 {
@@ -12,9 +9,9 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
     }
 
     // Create a new class which implements IOrderingService
-    public class OrderingService : BaseEntity, IOrderingService
+    public class OrderingService : IOrderingService
     {
-        // placing an order(s) would require storage for the newly placed order(s)
+        // placing an order would require storage for the newly placed order
         // in the database; the shopcontext is therefore necesary for IOrderingService
         private readonly ShopContext _db;
 
@@ -24,6 +21,7 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
             _db = db;
         }
 
+        // This class implements IOrderingService
         public async Task<int> PlaceOrder(Location location, string customerName, OrderLine[] orderLines)
         {
             // create the customer making the order
@@ -34,10 +32,6 @@ namespace UiS.Dat240.Lab3.Core.Domain.Ordering.Services
 
             // save the order created to the database
             _db.Orders.Add(order);
-            _db.SaveChanges();
-
-            Events.Add(new OrderPlaced(order.Id));
-            Events.Add(new OrderPlacedCopy(order.Id));
 
             return await _db.SaveChangesAsync();
         }

@@ -5,6 +5,7 @@
 
     <h1 class="display-3">Order</h1>
     <div class="text-left">
+        <!-- if the Order is not null, display all order information present -->
         @if (Model.Order is not null)
         {
             <h2 class="display-4">Order Details</h2>
@@ -45,22 +46,32 @@
                 </table>
             </div>
 
-            <h2 class="display-4">Ship item</h2>
-            <form method="post" class="mt-5">
-                <div class="mb-3">
-                    Shipper name:
-                    <input asp-for="Shipper.Name" class="form-control" />
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save</button>
-                @if (string.IsNullOrWhiteSpace(Model.Error)!)
-                {
-                    <div class="text-danger">
-                        @Model.Error
+            // If the order's Status is Placed, then provide a form to give a shippers name.
+            @if (Model.Order.Status == Model.Placed)
+            {
+                <h2 class="display-4">Ship item</h2>
+                <form method="post" class="mt-5">
+                    <div class="mb-3">
+                        Shipper name:
+                        <input asp-for="Shipper.Name" class="form-control" />
                     </div>
-                }
-            </form>
 
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    @foreach (var error in Model.Errors)
+                    {
+
+                        <div class="text-danger">
+                            @error
+                        </div>
+                    }
+                </form>
+            }
+            // if the Status of the order is Shipped, then display the Shipper's name.
+            else if (Model.Order.Status == Model.Shipped)
+            {
+                <h2 class="display-4">Shipping information</h2>
+                <p>Item is being shipped by Shipper: @Model.Offer.Shipper.Name </p>
+            }
         }
     </div>
 </div>

@@ -42,7 +42,17 @@ namespace UiS.Dat240.Lab3.Core.Domain.Invoicing
 {
     public class Invoice : BaseEntity
     {
-        public Invoice() { }
+        public Invoice()
+        {
+            // This default constructor is required to solve this error/requirement, it is not used directly.
+            /*
+            System.Exception: Could not resolve a service of type 'UiS.Dat240.Lab3.Infrastructure.Data.ShopContext' 
+                for the parameter 'db' of method 'Configure' on type 'UiS.Dat240.Lab3.Startup'.
+            System.InvalidOperationException: No suitable constructor was found for entity type 'Invoice'. 
+                The following constructors had parameters that could not be bound to properties of the entity type: 
+                cannot bind 'Building', 'RoomNumber', 'LocationNotes', 'customerName', 'amount' in 'Invoice(string Building, string RoomNumber, string LocationNotes, string customerName, decimal amount)'.
+            */
+        }
         public Invoice(
            string Building,
            string RoomNumber,

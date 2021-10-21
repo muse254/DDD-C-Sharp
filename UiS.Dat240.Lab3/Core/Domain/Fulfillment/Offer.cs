@@ -23,20 +23,17 @@ using System;
 
 namespace UiS.Dat240.Lab3.Core.Domain.Fulfillment
 {
-    public class Offer : BaseEntity
+    public class Offer
     {
-        public Offer()
+        // This is the constructor, it requires that the orderId be provided.
+        public Offer(Guid orderId)
         {
-            Shipper = new();
-        }
-        public Offer(int orderId)
-        {
-            Console.WriteLine("Offer created for id: " + orderId);
             OrderId = orderId;
-            Shipper = new();
         }
         public int Id { get; protected set; }
-        public int OrderId { get; set; }
-        public virtual Shipper Shipper { get; set; }
+        public Guid OrderId { get; set; }
+
+        // The Shipper is set to nullable because by default it is not provided by the constructor parameters.
+        public virtual Shipper? Shipper { get; set; }
     }
 }
